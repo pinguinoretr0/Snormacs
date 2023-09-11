@@ -1,4 +1,4 @@
-#+title: Zonaimacs Backend
+#+title: OUTDATED ASF dont read this shit I'll clean this up later
 I'm not any good at Lisp programming so I decided to make a Zonaimacs backend via Python.
 I could have done this "backend" via Shell Scripting but I'm not any good at that either.
 I also believe that having Python manage certain things would be better than a Shell Script.
