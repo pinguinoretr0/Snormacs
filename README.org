@@ -1,0 +1,10 @@
+#+title: Snormacs
+Personal Emacs Literate Configuration; 15% Completed
+
+
+- Bloated and needs work in a lot of areas but includes a good amount of shit
+- Includes a working EXWM Desktop
+- LSP & Basic Syntax Highlighting
+- Elpaca Package Manager
+- EVIL + GOD Modes (planning to add more and write their own configs)
+- I need to add more functions & clean stuff up
