@@ -327,9 +327,8 @@
 	:elpaca t
 	:after exwm
 	:config (desktop-environment-mode)
-	:custom
-	(desktop-environment-brightness-small-increment "2%+")
-  (desktop-environment-brightness-small-decrement "2%-")
-  (desktop-environment-brightness-normal-increment "5%+")
-  (desktop-environment-brightness-normal-decrement "5%-")
-	(desktop-environment-screenshot-command "flameshot gui"))
+	(setq desktop-environment-brightness-small-increment "2%+")
+  (setq desktop-environment-brightness-small-decrement "2%-")
+  (setq desktop-environment-brightness-normal-increment "5%+")
+  (setq desktop-environment-brightness-normal-decrement "5%-")
+	(setq desktop-environment-screenshot-command "flameshot gui"))

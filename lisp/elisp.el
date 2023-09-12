@@ -138,9 +138,9 @@ middle"
 
 ;; Misc \/ Other
 (defun snor/evil-delete () (interactive)
-  (let ((evil-this-register ?0))
-    (call-interactively 'evil-paste-after))
-	(setq-default evil-kill-on-visual-paste nil))
+			 (let ((evil-this-register ?0))
+				 (call-interactively 'evil-paste-after))
+			 (setq-default evil-kill-on-visual-paste nil))
 
 (defun snor/repeat-command (command)
   "Repeat COMMAND."

@@ -1,4 +1,3 @@
-;; Startup Elpaca Package Manager
 (defvar elpaca-installer-version 0.5)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -41,17 +40,16 @@
   (setq elpaca-use-package-by-default t))
 (elpaca-wait)
 
-;; Important Package to keep ~/.emacs.d/ clean
 (use-package no-littering
-  :elpaca t
-  :config
-  (setq no-littering-etc-directory
-      (expand-file-name ".config/" user-emacs-directory))
-  (setq no-littering-var-directory
-      (expand-file-name ".data/" user-emacs-directory)))
+:elpaca t
+:config
+(setq no-littering-etc-directory
+    (expand-file-name ".config/" user-emacs-directory))
+(setq no-littering-var-directory
+    (expand-file-name ".data/" user-emacs-directory)))
 
-;; Init
 (set-default-coding-systems 'utf-8)
+(add-to-list 'default-frame-alist '(font . "Comic Mono:9" )) ;; Sets font to Comic Mono (comment this line for default)
 (add-hook 'prog-mode-hook 'global-display-line-numbers-mode)
 (add-hook 'text-mode-hook 'visual-line-mode)
 
@@ -60,13 +58,11 @@
 (setq tab-width 2)
 
 (load "~/.emacs.d/lisp/elisp.el")
-;;(load "~/.emacs.d/lisp/home.el")
-;;(load "~/.emacs.d/lisp/linux.el")
+;;(load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
 
-;; Looks & Fonts
 (use-package doom-themes
   :elpaca t
-  :init (load-theme 'doom-tokyo-night t) ;; palenight 
+  :init (load-theme 'doom-tokyo-night t) ;; Palenight is my 2nd theme 
   :config
   (setq doom-themes-enable-bold t    
         doom-themes-enable-italic t))
@@ -135,14 +131,20 @@
   (doom-modeline-buffer-file-name-style 'truncate-with-project))
 
 (use-package rainbow-mode :elpaca t :config (add-hook 'prog-mode-hook (lambda () (rainbow-mode))))
-;; all-the-icons-install-fonts
+
+;; Remember to M-x all-the-icons-install-fonts & nerd-icons-install-fonts
 (use-package all-the-icons :elpaca t :if (display-graphic-p))
-;; nerd-icons-install-fonts
 (use-package nerd-icons :elpaca t)
 (use-package treemacs-all-the-icons :elpaca t :config (treemacs-load-theme "all-the-icons"))
 
-;; Utilities & Misc
-;;(use-package vterm :elpaca t)
+(use-package calfw :elpaca t)
+(use-package calfw-org
+  :elpaca t
+  :config
+  (setq cfw:org-agenda-schedule-args '(:timestamp))) ;; TODO // Create calendar setup
+
+(use-package typo :elpaca t :init (typo-global-mode 1))
+
 (use-package magit :elpaca t)
 
 (use-package perspective
@@ -155,6 +157,7 @@
 (use-package treemacs :elpaca t)
 (use-package ranger
   :elpaca t
+  :init (ranger-override-dired-mode t)
   :config
   (setq ranger-cleanup-eagerly t)
   (setq ranger-modify-header t)
@@ -165,7 +168,6 @@
 (use-package sudo-utils :elpaca t)
 (use-package elcord :elpaca t :init (elcord-mode)) ;; Discord Status of Emacs
 
-;; Syntax & LSP
 (use-package tree-sitter :elpaca t :init (global-tree-sitter-mode))
 (use-package tree-sitter-langs :elpaca t)
 
@@ -174,17 +176,17 @@
   :init (setq lsp-keymap-prefix "C-c l")
   (add-hook 'prog-mode-hook #'lsp)
   (add-hook 'lsp-mode #'lsp-enable-which-key-integration)
-	:config
-	(setq lsp-warn-no-matched-clients nil)
+  :config
+  (setq lsp-warn-no-matched-clients nil)
   :commands lsp)
-(use-package lsp-ui :elpaca t :commands lsp-ui-mode) ;; Extra LSP Packages
+;; Technically "Extra" LSP Packages
+(use-package lsp-ui :elpaca t :commands lsp-ui-mode) 
 (use-package lsp-ivy :elpaca t :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :elpaca t :commands lsp-treemacs-errors-list)
 (use-package dap-mode :elpaca t)
 (use-package company :elpaca t :config (add-hook 'prog-mode-hook #'global-company-mode))
 
-;; Language Modes
-(use-package paredit
+(use-package paredit ;; The most useful shit for LISP (wraps parentheses & quotes)
   :elpaca t
   :init (autoload 'enable-paredit-mode "paredit" t)
   :config
@@ -200,23 +202,22 @@
 (use-package geiser-guile :elpaca t)
 (use-package nim-mode :elpaca t)
 (use-package nix-mode :elpaca t)
-;; Install rust-analyzer for lsp
 (use-package rust-mode :elpaca t :config (add-hook 'rust-mode-hook #'cargo-minor-mode))
 (use-package cargo :elpaca t)
 
 (use-package go-mode :elpaca t)
 (use-package lua-mode :elpaca t)
 (use-package haskell-mode :elpaca t)
-(use-package zig-mode :elpaca t) ;; Install zls for lsp
+(use-package zig-mode :elpaca t)
 
 (use-package typescript-mode :elpaca t)
 (use-package kotlin-mode :elpaca t)
 (use-package yuck-mode :elpaca t)
 
-(use-package go-translate ;; Helps translating when modding games
+(use-package go-translate
   :elpaca t
   :config
-  (setq gts-translate-list '(("en" "ja") ("en" "es")))
+  (setq gts-translate-list '(("en" "ja") ("en" "es"))) ;; Add a longer list if you want to
 
   (setq gts-default-translator
         (gts-translator
@@ -224,7 +225,6 @@
          :engines (list (gts-bing-engine) (gts-google-engine))
          :render (gts-buffer-render))))
 
-;; Keybindings/Mappings
 (use-package general
   :elpaca t
   :config
@@ -284,8 +284,11 @@
     "o df"    '(org-babel-tangle          :wk "Babel Tangle File")
 
     ;; MISC
-    "f"       '(find-file                 :wk "Find & Open File")
-    "d t"     '(gts-do-translate          :wk "Translate Region"))
+    "f"       '(find-file                 :wk "Find & Open File"))
+
+  (snor/leader-mappings-vis
+    ;; Visual Mode Leader Mappings
+    "d t" '(gts-do-translate              :wk "Translates Region"))
 
   (snor/localleader-mappings-norm
     ;; WINDOW MANAGEMENT
@@ -300,9 +303,11 @@
 
     "s k" '(delete-window             :wk "Delete Current Window")
 
+		;; Calendar
+		"c l" '(cfw:open-org-calendar     :wk "Launches Org-Calendar")
+
     ;; Misc
     "t" '(treemacs                     :wk "Toggle Treemacs")
-    "c" '(cargo-minor-mode-command-map :wk "Show Cargo Commands")
     
     ;; Workspaces/Persp-Mode
     "<tab>"   '(:ignore t    :wk "Workspaces")
@@ -328,7 +333,7 @@
     "C-2" '(next-line                 :wk "Move Down")
     "C-3" '(forward-char              :wk "Move Foward")
     "C-o" '(previous-line             :wk "Move Up")
-
+    
     "C-4" '(move-end-of-line          :wk "Move to the End of the Line")
     "C-`" '(move-beginning-of-line    :wk "Move to the Start of the Line")
     
@@ -347,9 +352,9 @@
 
   (evil-define-key 'insert 'global (kbd "M-e") 'evil-normal-state)
   (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
-;; Extra stuff for Evil
-(use-package evil-god-state :elpaca t :after evil)
-(use-package evil-collection :elpaca t :after evil)
+  ;; Extra stuff for Evil
+  (use-package evil-god-state :elpaca t :after evil)
+  (use-package evil-collection :elpaca t :after evil)
 
 (use-package god-mode
   :elpaca t
@@ -361,7 +366,6 @@
 
 (use-package hydra :elpaca t)
 
-;; Org Mode Configuration
 (use-package org
   :elpaca t
   :init (org-mode)
@@ -370,15 +374,7 @@
 
   (setq org-startup-indented t)           
   (setq org-startup-with-inline-images t)
-  (setq org-src-fontify-natively t)
-
-  (custom-set-faces
-   '(org-block-begin-line
-     ((t (:underline "#292D3E" :foreground "#8fbcbb" :background "#2e3440" :extend t))))
-   '(org-block
-     ((t (:background "#3b4252" :extend t))))
-   '(org-block-end-line
-     ((t (:overline "#292D3E" :foreground "#8fbcbb" :background "#2e3440" :extend t))))))
+  (setq org-src-fontify-natively t))
 
 (use-package org-roam :elpaca t :after org)
 
@@ -390,25 +386,17 @@
 (use-package org-present :elpaca t :after org-roam)
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(elcord-editor-icon "emacs_material_icon")
- '(elcord-idle-message "Playing Melee...")
- '(elcord-idle-timer 500)
- '(elcord-quiet t)
- '(elcord-refresh-rate 1)
- '(warning-suppress-log-types
-   '((org-element-cache)
-     (org-element-cache)
-     (org-element-cache)))
- '(warning-suppress-types '((org-element-cache) (org-element-cache))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-block ((t (:background "#3b4252" :extend t))))
- '(org-block-begin-line ((t (:underline "#292D3E" :foreground "#8fbcbb" :background "#2e3440" :extend t))))
- '(org-block-end-line ((t (:overline "#292D3E" :foreground "#8fbcbb" :background "#2e3440" :extend t)))))
+;; custom-set-variables was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+'(elcord-editor-icon "emacs_material_icon")
+'(elcord-idle-message "Playing Melee...")
+'(elcord-idle-timer 500)
+'(elcord-quiet t)
+'(elcord-refresh-rate 1)
+'(warning-suppress-log-types
+  '((org-element-cache)
+    (org-element-cache)
+    (org-element-cache)))
+'(warning-suppress-types '((org-element-cache) (org-element-cache))))
