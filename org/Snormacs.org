@@ -139,10 +139,8 @@ Ok theres a lot more to it.
 - The Doom-Themes package will have all the themes you need so after declaration, declare your theme.
 - Ivy is my completion framework which makes Snormacs look nice and not like it came out in Windows 8 era.
 - Projectile makes Ivy less shit.
-- Dashboard is the startup splash-screen, if dashboard isn't installed you'll just get an empty
-boring ass looking scratch buffer.
-- Which-Key will keep you from going insane and having to remember every keybind you have in your configuration,
-which-key opens a tiny little buffer showing the prefixes of each keybind.
+- Dashboard is the startup splash-screen, if dashboard isn't installed you'll just get an empty boring ass looking scratch buffer.
+- Which-Key will keep you from going insane and having to remember every keybind you have in your configuration, which-key opens a tiny little buffer showing the prefixes of each keybind.
 - Doom-Modeline will change that disgusting Emacs modeline into something that you can actually look at.
 For those of you whom might not know, Emacs' modeline the the link at the bottom of the screen that displays
 information.
@@ -276,7 +274,7 @@ This is something I have to work on more. BUT its still useable and fine
 for now.
 
 
-**Be Happy For**
+*Be Happy For*
 - Company; Auto-completion
 - Tree-Sitter's Syntax
 - LSP-Mode's Basic LSP support for now
@@ -549,14 +547,4 @@ Custom Set Variables via "customize-group" functions.
        (org-element-cache)
        (org-element-cache)))
    '(warning-suppress-types '((org-element-cache) (org-element-cache))))
-#+end_src
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-#+end_src
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-#+end_src
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-#+end_src
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-#+end_src
-#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
 #+end_src
