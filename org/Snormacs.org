@@ -128,12 +128,14 @@ which is the file that contains all of Snormacs' custom code/functions.
   (setq indent-tabs-mode nil)
   (setq tab-width 2)
 
+  (electric-pair-mode 1)
+  (show-paren-mode 1) 
+
   (load "~/.emacs.d/lisp/elisp.el")
   ;;(load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
 #+end_src
 **** Visuals
 No one wants their editor to look like shit, what else can I say?
-
 
 Ok theres a lot more to it.
 - The Doom-Themes package will have all the themes you need so after declaration, declare your theme.
@@ -154,9 +156,8 @@ information.
     (setq doom-themes-enable-bold t    
           doom-themes-enable-italic t))
 
-
+  ;; Completion Setup
   (use-package ivy :elpaca t :init (ivy-mode))
-
   (use-package projectile :elpaca t)
 
   (use-package dashboard
@@ -244,6 +245,7 @@ Utilities & functionalites added into Snormacs...
     (setq cfw:org-agenda-schedule-args '(:timestamp))) ;; TODO // Create calendar setup
 
   (use-package typo :elpaca t :init (typo-global-mode 1))
+  (use-package synonymous :elpaca t)
 
   (use-package magit :elpaca t)
 
@@ -253,6 +255,18 @@ Utilities & functionalites added into Snormacs...
     (persp-mode-prefix-key (kbd "C-."))
     (persp-initial-frame-name "1")
     :init (persp-mode))
+
+  (use-package avy :elpaca t)
+  (use-package ace-jump-buffer
+  :elpaca t
+  :config)
+
+  (use-package sublimity
+		:elpaca t
+		:config
+	(setq sublimity-scroll-vertical-frame-delay 0.01)
+	(setq sublimity-scroll-weight 5
+      sublimity-scroll-drift-length 10))
 
   (use-package treemacs :elpaca t)
   (use-package ranger
@@ -399,7 +413,7 @@ Now for GOD-Mode, I still have to define it's purpose in comparison to EVIL.
     (snor/leader-mappings-norm
       ;; BUFFER MANAGEMENT
       "j"       '(:ignore t                 :wk "Buffer KeyChords")
-      "j s"     '(switch-to-buffer          :wk "Switch to an Active Buffer")
+      "j s"     '(ace-jump-buffer           :wk "Switch to an Active Buffer")
       "j r"     '(revert-buffer             :wk "Reload Current Buffer")
       "j k"     '(kill-current-buffer       :wk "Kills Current Buffer")
       "j f"     '(ibuffer-list-buffers      :wk "List Buffers")
@@ -516,6 +530,7 @@ More will be added later.
     :config
     (evil-define-key 'normal 'global (kbd "<tab>") 'org-cycle)
 
+    (setq org-src-preserve-indentation t)
     (setq org-startup-indented t)           
     (setq org-startup-with-inline-images t)
     (setq org-src-fontify-natively t))
