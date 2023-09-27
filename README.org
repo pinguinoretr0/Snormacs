@@ -48,10 +48,13 @@ Personal Emacs Literate Configuration; 15% Completed
 - EVIL + GOD Modes (planning to add more and write their own configs)
 - I need to add more functions & clean stuff up
 
+Snormacs-Cli; A command with multiple features
+
+
+- Snormacs Installer [DONE] (Installs Snormacs for you)
+- Some Regex Feature (Use regex to find patterns, useful for programming)
+- Dog (A clone of cat)
+- More...
+
 * Installation
-Installation requires git & python is recommended if you want to use backend.py 
-for anything:
-#+begin_src bash
-$ git clone https://github.com/pinguinoretr0/Snormacs/ ~/.emacs.d
-# Then just run emacs & elpaca will install all the packages
-#+end_src
+TODO
