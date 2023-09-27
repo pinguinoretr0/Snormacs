@@ -1,6 +1,5 @@
 use clap::Parser;
 use std::{
-		io,
 		env,
 		fs,
 		process::Command,
@@ -34,25 +33,48 @@ fn main() {
 		if args.installer != 0 {
 				let pkg: &str = "git";
 				if program_check(pkg) {
-						println!("(Git is installed!)\n");
+						println!("(Program \"git\" is installed!)");
 				} else {
 						println!("Please install \"git!\"");
 				}
 
 				let mut fetch_repo = Command::new("git");
-				fetch_repo.args(&["clone", "https://github.com/thelinuxpirate/Snormacs", "temp/"]);
+				fetch_repo.args(&["clone", "https://github.com/thelinuxpirate/Snormacs", ".emacs.d/"]);
+				let mut fetch_nix = Command::new("sh"); // Single User
+				fetch_nix.args(&["<(curl -L https://nixos.org/nix/install)", "--no-daemon"]); 
+				let mut install_snormacs = Command::new("mv");
+				install_snormacs.args(&[".emacs.d", "~/"]);
 				
-				match args.installer {
+				match args.installer { // Uni
 						1 => {
 								println!("=+Snormacs Installer+=\nInstalling Snormacs;");
 								println!("Fetching Snormacs...");								
 								let _ = fetch_repo.output();
-								println!("Done!");
-								//Command::new("rm -r temp/");
+								println!("Done!\nNow removing the Git repository");
+								let _ = install_snormacs.output();
+								println!("Merged Snormacs into ~/.emacs.d\n[DONE]");
 						},
 
-						2 => println!("V2 Install"),
-						_ => println!("Invalid Version; Read the Man Page"),
+						2 => { // Made for Non-NixOS Distros
+								let pkg: &str = "wget";
+								if program_check(pkg) {
+										println!("(Program \"wget\" is installed!)");
+								} else {
+										println!("Please install \"wget!\"");
+								}
+
+								println!("=+Snormacs Installer; V2+=\nInstalling Nix;");
+								let _ = fetch_nix.output();
+								println!("Nix has been installed succesfully; make sure to add it to your $PATH\n \
+													Now installing Snormacs...");
+
+								println!("Fetching Snormacs...");								
+								let _ = fetch_repo.output();
+								println!("Done!\nNow removing the Git repository");
+								let _ = install_snormacs.output();
+								println!("Merged Snormacs into ~/.emacs.d\n[DONE]");
+						},
+						_ => println!("Invalid Parameter; 1 & 2 are your options"),
 				}
 		}
 }
