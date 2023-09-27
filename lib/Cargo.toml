@@ -1,8 +1,9 @@
 [package]
-name = "snormacs"
-authors = [ "Retr0"]
-version = "0.1.0"
+name = "snormacs-cli"
+authors = ["TheLinuxPirate"]
+version = "0.0.1"
 edition = "2021"
 
 [dependencies]
-nix = "0.27.1"
+clap = { version = "4.4.5", features = ["derive"] }
+regex = "1.9.5"

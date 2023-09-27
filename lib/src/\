@@ -1,12 +1,10 @@
 use clap::Parser;
-use std::{
-		io,
-		env,
-		fs,
-		process::Command,
-};
+use std::io;
+use std::env;
+use std::fs;
 
-/// Snormacs CLI Program written in Rust
+
+/// Simple program to greet a person
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
@@ -33,22 +31,18 @@ fn main() {
 		// Installer Options
 		if args.installer != 0 {
 				let pkg: &str = "git";
-				if program_check(pkg) {
-						println!("(Git is installed!)\n");
-				} else {
-						println!("Please install \"git!\"");
-				}
+								if program_check(pkg) { println!("Git is installed!"); }
+								else { println!("Please install Git!"); }
 
-				let mut fetch_repo = Command::new("git");
-				fetch_repo.args(&["clone", "https://github.com/thelinuxpirate/Snormacs", "temp/"]);
-				
+
 				match args.installer {
 						1 => {
-								println!("=+Snormacs Installer+=\nInstalling Snormacs;");
-								println!("Fetching Snormacs...");								
-								let _ = fetch_repo.output();
-								println!("Done!");
-								//Command::new("rm -r temp/");
+								println!("=+Snormacs Installer+=");
+								println!("\nInstalling Snormacs;\nMake sure you have all the \
+                required packages installed");								
+								
+								//std::io::stdin().read_line(&mut line).unwrap();
+								
 						},
 
 						2 => println!("V2 Install"),
