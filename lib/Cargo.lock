@@ -306,6 +306,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "snormacs-rs"
+version = "0.0.0"
+dependencies = [
+ "emacs",
+]
+
+[[package]]
 name = "strsim"
 version = "0.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"

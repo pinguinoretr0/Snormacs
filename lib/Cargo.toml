@@ -6,7 +6,8 @@ edition = "2021"
 
 [workspace]
 members = [
-				"elcord-rs",
+				"snormacs-rs",
+				"elcord-rs"
 				]
 
 [dependencies]
