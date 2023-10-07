@@ -1,4 +1,5 @@
-#+title: Snormacs
+#+title: Snormacs (Version 2.0)
+Created by TheLinuxPirate; Usable for everyone.
 #+begin_src
      __                                _.--'"7
     `. `--._                        ,-'_,-  ,'
@@ -38,14 +39,14 @@
                                     `---'--.,'"`'
 #+end_src
 * About
-Personal Emacs Literate Configuration; 15% Completed
+Personal Emacs Literate Configuration; 18% Completed
 
 
 - Bloated and needs work in a lot of areas but includes a good amount of shit
-- Includes a working EXWM Desktop
+- Includes a working & now stable EXWM Desktop
 - LSP & Basic Syntax Highlighting
-- Elpaca Package Manager
-- EVIL + GOD Modes (planning to add more and write their own configs)
+- Elpaca Package Manager (might be replaced by Nix)
+- EVIL + GOD Modes (planning to add more functionality to GOD Mode)
 - I need to add more functions & clean stuff up
 
 Snormacs-Cli; A command with multiple features
@@ -54,7 +55,10 @@ Snormacs-Cli; A command with multiple features
 - Snormacs Installer [DONE] (Installs Snormacs for you)
 - Some Regex Feature (Use regex to find patterns, useful for programming)
 - Dog (A clone of cat)
-- More...
+
+
+- [Library]: Create a status background daemon for Snormacs
+that detects buffers & adds custom functionality to said buffers. (elcord)
 
 * Installation
 TODO
