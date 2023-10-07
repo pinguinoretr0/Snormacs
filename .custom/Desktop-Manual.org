@@ -1,0 +1,25 @@
+#+title: Snormacs' EXWM Desktop
+* What is EXWM?
+Exwm is a Window Manager based off X Tool's which adds Window Management
+features directly to Emacs. If you want to live inside of Emacs then EXWM is perfect for you.
+The current Snormacs EXWM Desktop is stable (V 2.0) for use from Emacs versions <=version-28.
+
+
+
+Features include:
+- Useable status bar provided by Polybar
+  (One day status bars will be converted to EWW)
+- Customizeable keychord desktop configuration
+- Emacs Daemons and manageable background processes
+- Custom workspaces managed by prespective-exwm
+
+
+TODO: (Update/Finish Documentation to V 2.0)
+- Add exwm-spotify package setup
+- Add Ivy-exwm completion setup
+- Create a sample NixOS/Nix Snormacs configuration
+  & include EXWM
+- Add exwm-firefox-evil for non-vimium users
+  (Native Vi & cutomizeable vi bindings for Firefox)
+- Add exwm-mff for better mouse support in exwm
+- EWW Topbar Xorg EXWM? (Not soon...)
