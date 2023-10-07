@@ -61,7 +61,7 @@
   (show-paren-mode 1) 
 
   (load "~/.emacs.d/lisp/elisp.el")
-  ;;(load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
+  (load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
 
   (use-package doom-themes
     :elpaca t
@@ -213,21 +213,30 @@
     (add-hook 'scheme-mode-hook #'enable-paredit-mode)
     (add-hook 'yuck-mode-hook #'enable-paredit-mode))
 
-  (use-package geiser :elpaca t)
-  (use-package geiser-guile :elpaca t)
-  (use-package nim-mode :elpaca t)
+  (use-package yuck-mode :elpaca t)
   (use-package nix-mode :elpaca t)
+  
   (use-package rust-mode :elpaca t :config (add-hook 'rust-mode-hook #'cargo-minor-mode))
   (use-package cargo :elpaca t)
-
   (use-package go-mode :elpaca t)
-  (use-package lua-mode :elpaca t)
-  (use-package haskell-mode :elpaca t)
   (use-package zig-mode :elpaca t)
 
+  (use-package gdscript-mode :elpaca t)
+  ;;(use-package csharp-mode :elpaca t) ;; Apart of Emacs29
   (use-package typescript-mode :elpaca t)
   (use-package kotlin-mode :elpaca t)
-  (use-package yuck-mode :elpaca t)
+
+  (use-package nim-mode :elpaca t)  
+  (use-package lua-mode :elpaca t)
+
+  (use-package haskell-mode :elpaca t)
+  (use-package fsharp-mode :elpaca t)
+  (use-package elixir-mode :elpaca t)
+  (use-package clojure-mode :elpaca t)
+
+  (use-package geiser :elpaca t)
+  (use-package geiser-guile :elpaca t)
+  
 
   (use-package go-translate
     :elpaca t

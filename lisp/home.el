@@ -62,8 +62,8 @@
   (setq snor/barp (start-process-shell-command "polybar" nil "polybar exwm-bar")))
 
 (defun snor/exwm-init-hook ()
-	(snor/set-command "xset r rate 200 60" nil) ;; Set shitty keyboard rate to be faster
-	(snor/set-command "xset b off" nil) ;; Disable Annoying X Beep Noise
+	(snor/set-command "xset r rate 200 60" nil) ;; Set shitty default X keyboard rate to be faster
+	(snor/set-command "xset b off" nil) ;; Disable annoying X beep noise on some systems
 	(run-at-time "2 sec" nil (lambda () (snor/update-wallpaper)))
 	(snor/set-command "picom --daemon" nil)
 	(snor/set-bar)
@@ -109,8 +109,8 @@
 
 	;; These keys should always pass through to Emacs
   (setq exwm-input-prefix-keys
-				'(?\s-\ ;; Super+Space
-					?\C-\
+				'(?\s-\\ ;; Super+Space
+					?\C-\\
 					?\M-x
 					?\M-&
 					?\M-h

@@ -11,13 +11,13 @@ finding Neovim documentation for Lua.
 - LSP
 - EVIL + GOD Mode
 - ...
-
+#+TODO: Create an example NixOS configuration with Snormacs' EXWM support
 * Snormacs!
 Alright to get started I will lay out some things first:
 - *A.* I use NixOS so in the future there may be Nix-Related Changes
 - *B.* The "~/.emacs.d/" PATH is very important and anything related to
-  Emacs will be there. In my personal dotfiles I also use it to store
-  files & other media. (.custom)
+  GNU Emacs will be there. In my personal dotfiles I also use it to store
+  files & other media. (~/.emacs.d/.custom/)
 ** Early Init:
 Early Init is a file sourced by Emacs that by default is loaded before anything else.
 This is important so we can enable the Elpaca PKG Manager to handle our
@@ -132,7 +132,7 @@ which is the file that contains all of Snormacs' custom code/functions.
   (show-paren-mode 1) 
 
   (load "~/.emacs.d/lisp/elisp.el")
-  ;;(load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
+  (load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
 #+end_src
 **** Visuals
 No one wants their editor to look like shit, what else can I say?
@@ -237,6 +237,12 @@ Utilities & functionalites added into Snormacs...
 - Multiple Cursors for editing on multiple lines like a true programmer.
 - *Nix's Sudo Utils for editing files with Root permissions.
 - Elcord a Discord Custom status displaying Emacs as your RPC.
+
+
+TODO:
+Make a rust lib to read current buffer and update
+discord rpc to a custom status. (Custom EXWM Rust lib after...)
+Add w3m browser support (EXWM Exclusive?)
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   (use-package calfw :elpaca t)
   (use-package calfw-org
@@ -329,21 +335,30 @@ that can translate text using your search engine of choice!
     (add-hook 'scheme-mode-hook #'enable-paredit-mode)
     (add-hook 'yuck-mode-hook #'enable-paredit-mode))
 
-  (use-package geiser :elpaca t)
-  (use-package geiser-guile :elpaca t)
-  (use-package nim-mode :elpaca t)
+  (use-package yuck-mode :elpaca t)
   (use-package nix-mode :elpaca t)
+  
   (use-package rust-mode :elpaca t :config (add-hook 'rust-mode-hook #'cargo-minor-mode))
   (use-package cargo :elpaca t)
-
   (use-package go-mode :elpaca t)
-  (use-package lua-mode :elpaca t)
-  (use-package haskell-mode :elpaca t)
   (use-package zig-mode :elpaca t)
 
+  (use-package gdscript-mode :elpaca t)
+  ;;(use-package csharp-mode :elpaca t) ;; Apart of Emacs29
   (use-package typescript-mode :elpaca t)
   (use-package kotlin-mode :elpaca t)
-  (use-package yuck-mode :elpaca t)
+
+  (use-package nim-mode :elpaca t)  
+  (use-package lua-mode :elpaca t)
+
+  (use-package haskell-mode :elpaca t)
+  (use-package fsharp-mode :elpaca t)
+  (use-package elixir-mode :elpaca t)
+  (use-package clojure-mode :elpaca t)
+
+  (use-package geiser :elpaca t)
+  (use-package geiser-guile :elpaca t)
+  
 
   (use-package go-translate
     :elpaca t

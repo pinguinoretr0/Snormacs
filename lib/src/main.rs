@@ -1,7 +1,10 @@
 use clap::Parser;
+use regex::Regex;
 use std::{
 		env,
 		fs,
+		fs::File,
+		io::{self, Read},
 		process::Command,
 };
 
@@ -9,9 +12,15 @@ use std::{
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-		/// Number of installation mode
+		/// Installation Mode 
 		#[arg(short, long, default_value_t = 0)]
 		installer: u8,
+		/// Pattern to match
+		#[arg(short, long)]
+		parallel: String,
+		/// File path to search
+		#[arg(short, long)]
+		path: String
 }
 
 fn program_check(program: &str) -> bool {
@@ -77,4 +86,15 @@ fn main() {
 						_ => println!("Invalid Parameter; 1 & 2 are your options"),
 				}
 		}
+
+		// Parallel Command (Regex)
+		let path = File::open(&args.path);
+    let mut content = String::new();
+		path.to_string();
+    path.read_to_string(&mut content);
+
+    let pattern = Regex::new(&args.parallel).unwrap();
+    let count = pattern.find_iter(&content).count();
+
+    println!("Number of matches: {}", count);
 }
