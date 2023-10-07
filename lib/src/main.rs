@@ -88,13 +88,13 @@ fn main() {
 		}
 
 		// Parallel Command (Regex)
-		let path = File::open(&args.path);
-    let mut content = String::new();
-		path.to_string();
-    path.read_to_string(&mut content);
+		// let path = File::open(&args.path);
+    // let mut content = String::new();
+		// path.to_string();
+    // path.read_to_string(&mut content);
 
-    let pattern = Regex::new(&args.parallel).unwrap();
-    let count = pattern.find_iter(&content).count();
+    // let pattern = Regex::new(&args.parallel).unwrap();
+    // let count = pattern.find_iter(&content).count();
 
-    println!("Number of matches: {}", count);
+    // println!("Number of matches: {}", count);
 }
