@@ -27,7 +27,17 @@
 
   # EXWM/X11
   services.xserver.enable = true;
-  services.xserver.windowManager.exwm.enable = true; 
+  services.xserver.displayManager.startx.enable = true;
+  services.emacs.enable = true;
+  services.xserver.displayManager.session = [
+    {
+      manage = "window";
+      name = "EXWM";
+      start = ''
+       emacsclient -c 
+       '';
+    }
+  ];
   services.xserver = {
     layout = "us";
     xkbVariant = "";
