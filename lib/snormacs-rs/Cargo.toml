@@ -1,7 +1,0 @@
-[package]
-name = "snormacs-rs"
-authors = ["TheLinuxPirate"]
-version = "0.0.1"
-
-[dependencies]
-emacs = "0.18.0"
