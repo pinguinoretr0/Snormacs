@@ -20,7 +20,7 @@ struct Args {
 		parallel: String,
 		/// File path to search
 		#[arg(short, long)]
-		path: String
+		file: String
 }
 
 fn program_check(program: &str) -> bool {

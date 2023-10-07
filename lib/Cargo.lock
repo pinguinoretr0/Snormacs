@@ -157,6 +157,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "elcord-rs"
+version = "0.0.0"
+dependencies = [
+ "emacs",
+]
+
+[[package]]
 name = "emacs"
 version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -296,13 +303,6 @@ version = "0.0.2"
 dependencies = [
  "clap",
  "regex",
-]
-
-[[package]]
-name = "snormacs-rs"
-version = "0.0.1"
-dependencies = [
- "emacs",
 ]
 
 [[package]]
