@@ -149,3 +149,7 @@ middle"
         (repeat-message-function           #'ignore)
         (last-repeatable-command           'repeat))
     (repeat nil)))
+
+(defun snor/untabify-on-save ()
+  "Run untabify when saving a file."
+  (untabify (point-min) (point-max)))

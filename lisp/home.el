@@ -75,10 +75,10 @@
 	:init
   (setq mouse-autoselect-window nil
         focus-follows-mouse t)
-	;; Stops asking to replace current Window Manager, if there is a current session
-	(setq-default exwm-replace nil)
 	(perspective-exwm-mode)
 	:config
+	;; Stops asking to replace current Window Manager, if there is a current session
+	(setq exwm-replace nil)
 	(setq exwm-workspace-number 8)
 	;; The next two make all buffers available on all workspaces
   (setq exwm-workspace-show-all-buffers t)

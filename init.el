@@ -62,6 +62,10 @@
 
   (load "~/.emacs.d/lisp/elisp.el")
   (load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
+  (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Once completed move to .custom
+  (add-hook 'evil-write-post-hook #'snor/untabify-on-save)
+  (require 'elcord-rs)
+  (elcord-rs-init-message "Initialization Status: [O K]") ;; States that everything is working on startup buffer
 
   (use-package doom-themes
     :elpaca t
@@ -149,6 +153,10 @@
   (use-package synonymous :elpaca t)
 
   (use-package magit :elpaca t)
+  (use-package crux :elpaca t) ;; Contains useful tools
+
+  (use-package literate-calc-mode :elpaca t :init (literate-calc-mode))
+  (use-package aggressive-indent :elpaca t)
 
   (use-package perspective
     :elpaca t
@@ -181,7 +189,7 @@
   (use-package multiple-cursors :elpaca t)
   (use-package sudo-edit :elpaca t)
   (use-package sudo-utils :elpaca t)
-  (use-package elcord :elpaca t :init (elcord-mode)) ;; Discord Status of Emacs
+  (use-package elcord :elpaca t :init (elcord-mode))
 
   (use-package tree-sitter :elpaca t :init (global-tree-sitter-mode))
   (use-package tree-sitter-langs :elpaca t)
@@ -282,7 +290,7 @@
       :keymaps 'override) 
     
     (snor/leader-mappings-norm
-      ;; BUFFER MANAGEMENT
+      ;; Buffer Management
       "j"       '(:ignore t                 :wk "Buffer KeyChords")
       "j s"     '(ace-jump-buffer           :wk "Switch to an Active Buffer")
       "j r"     '(revert-buffer             :wk "Reload Current Buffer")
@@ -291,12 +299,33 @@
       "j <tab>" '(switch-to-prev-buffer     :wk "Switch to Previous Buffer")
       "j SPC"   '(switch-to-next-buffer     :wk "Switch to Next Buffer")
 
+      ;; D | Leader
+      "d"       '(:ignore t                    :wk "Section D")
+
+			"d l"     '(:ignore t                    :wk "Literate Calc")
+      "d l l"   '(literate-calc-eval-buffer    :wk "Evaluates Buffer")
+      "d l j"   '(literate-calc-clear-overlays :wk "Clears Current Buffer Evaluations")
+
+			"d f"     '(:ignore t                    :wk "File Options")
+      "d f d"   '(delete-file                  :wk "Select A File To Delete")
+      "d f r"   '(rename-file                  :wk "Select A File To Rename")
+      "d f c"   '(copy-file                    :wk "Select A File To Copy")
+			"d f t"   '(move-file-to-trash           :wk "Select A File To Trash")
+
+      ;; "d"       '(                 :wk "")
+      ;; "d"       '(                 :wk "")
+      ;; "d"       '(                 :wk "")
+      ;; "d"       '(                 :wk "")
+      ;; "d"       '(                 :wk "")
+      ;; "d"       '(                 :wk "")
+
+
       ;; GOD MODE SETTINGS
       "g"       '(:ignore t                 :wk "GOD MODE MAPPINGS")
-      "g g"     '(snor/evil-god-mode-all   :wk "SWITCH TO GOD MODE GLOBAL")
-      "g l"     '(snor/evil-god-local-mode :wk "SWITCH TO GOD MODE BUFFER")
+      "g g"     '(snor/evil-god-mode-all    :wk "SWITCH TO GOD MODE GLOBAL")
+      "g l"     '(snor/evil-god-local-mode  :wk "SWITCH TO GOD MODE BUFFER")
       "g j"     '(evil-execute-in-god-state :wk "EXECUTE CMD IN GOD STATE")
-      "g ?"     '(snor/god-mode-manual     :wk "OPEN GOD MODE MANUAL")
+      "g ?"     '(snor/god-mode-manual      :wk "OPEN GOD MODE MANUAL")
 
       ;; Root
       "s"       '(:ignore t                 :wk "Options as Root")
@@ -312,7 +341,11 @@
 
     (snor/leader-mappings-vis
       ;; Visual Mode Leader Mappings
-      "d t" '(gts-do-translate              :wk "Translates Region"))
+      "s t" '(gts-do-translate              :wk "Translates Region")
+	    "s T" '(untabify                      :wk "Removes <Tab> From Region")		
+      "s j" '(crux-upcase-region            :wk "Converts Region To Uppercase")
+	    "s k" '(crux-downcase-region          :wk "Converts Region To Lowercase")		
+			"s f" '(comment-or-uncomment-region   :wk "Comments/Uncomments Region"))
 
     (snor/localleader-mappings-norm
       ;; WINDOW MANAGEMENT
@@ -364,8 +397,8 @@
       "C-x" '(:ignore t                 :wk "Action Key Prefix")
       "C-W" '(move-beginning-of-line    :wk "Move to the Start of the Line")
 
-      "C-?" '(snor/god-mode-manual    :wk "Opens God-Mode Manual")
-      "C-;" '(snor/become-human       :wk "Return to Human State")))
+      "C-?" '(snor/god-mode-manual      :wk "Opens God-Mode Manual")
+      "C-;" '(snor/become-human         :wk "Return to Human State")))
 
   (use-package evil
     :elpaca t
