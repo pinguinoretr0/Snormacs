@@ -49,16 +49,10 @@ Personal Emacs Literate Configuration; 18% Completed
 - EVIL + GOD Modes (planning to add more functionality to GOD Mode)
 - I need to add more functions & clean stuff up
 
-Snormacs-Cli; A command with multiple features
+Snormacs-Installer; An installation command written in Rust
 
 
-- Snormacs Installer [DONE] (Installs Snormacs for you)
-- Some Regex Feature (Use regex to find patterns, useful for programming)
-- Dog (A clone of cat)
-
-
-- [Library]: Create a status background daemon for Snormacs
-that detects buffers & adds custom functionality to said buffers. (elcord)
+- [Library]: Create a status background daemon for Snormacs that detects buffers & adds custom functionality to said buffers. (elcord)
 
 * Installation
-TODO
+Run the snormacs-installer command... (more detailed explanation later)
