@@ -8,19 +8,13 @@ use std::{
 		process::Command,
 };
 
-/// Snormacs CLI Program written in Rust
+/// Snormacs Installer For Non-NixOS Distros
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-		/// Installation Mode 
+		/// Installation Mode (Run On Non-Nix Distros)
 		#[arg(short, long, default_value_t = 0)]
 		installer: u8,
-		/// Pattern to match
-		#[arg(short, long)]
-		parallel: String,
-		/// File path to search
-		#[arg(short, long)]
-		file: String
 }
 
 fn program_check(program: &str) -> bool {
@@ -64,7 +58,7 @@ fn main() {
 								println!("Merged Snormacs into ~/.emacs.d\n[DONE]");
 						},
 
-						2 => { // Made for Non-NixOS Distros
+						2 => { // Packages Snormacs + Nix (Single User)
 								let pkg: &str = "wget";
 								if program_check(pkg) {
 										println!("(Program \"wget\" is installed!)");
@@ -86,15 +80,4 @@ fn main() {
 						_ => println!("Invalid Parameter; 1 & 2 are your options"),
 				}
 		}
-
-		// Parallel Command (Regex)
-		// let path = File::open(&args.path);
-    // let mut content = String::new();
-		// path.to_string();
-    // path.read_to_string(&mut content);
-
-    // let pattern = Regex::new(&args.parallel).unwrap();
-    // let count = pattern.find_iter(&content).count();
-
-    // println!("Number of matches: {}", count);
 }

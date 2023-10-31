@@ -1,13 +1,13 @@
 [package]
-name = "snormacs-cli"
+name = "snormacs-installer" # Snormacs Installer Program
 authors = ["TheLinuxPirate"]
-version = "0.0.2"
+version = "0.1"
 edition = "2021"
 
 [workspace]
 members = [
-				"snormacs-rs",
-				"elcord-rs"
+				"snormacs-rs", # Snormacs Rust Library
+				"elcord-rs" # Custom Elcord Code in Rust
 				]
 
 [dependencies]
