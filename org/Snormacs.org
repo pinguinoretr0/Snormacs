@@ -133,8 +133,12 @@ which is the file that contains all of Snormacs' custom code/functions.
 
   (load "~/.emacs.d/lisp/elisp.el")
   (load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
+
   (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Once completed move to .custom
   (add-hook 'evil-write-post-hook #'snor/untabify-on-save)
+  (add-hook 'eshell-load-hook #'eat-eshell-mode)
+  (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
+
   (require 'elcord-rs)
   (elcord-rs-init-message "Initialization Status: [O K]") ;; States that everything is working on startup buffer
 #+end_src
@@ -255,13 +259,37 @@ Add w3m browser support (EXWM Exclusive?)
     (setq cfw:org-agenda-schedule-args '(:timestamp))) ;; TODO // Create calendar setup
 
   (use-package typo :elpaca t :init (typo-global-mode 1))
-  (use-package synonymous :elpaca t)
+  (use-package speed-type :elpaca t)
 
   (use-package magit :elpaca t)
-  (use-package crux :elpaca t) ;; Contains useful tools
+  (use-package restart-emacs :elpaca t)
+  (use-package crux :elpaca t)
+  (use-package eat :elpaca t)
 
   (use-package literate-calc-mode :elpaca t :init (literate-calc-mode))
-  (use-package aggressive-indent :elpaca t)
+  (use-package move-text :elpaca t)
+  (use-package aggressive-indent
+    :elpaca t
+    :config
+    (global-aggressive-indent-mode 1)
+    (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
+
+  (use-package pdf-tools :elpaca t)
+  (use-package pdf-view-restore
+    :after pdf-tools
+    :config
+    (setq pdf-view-restore-filename "~/.emacs.d/.custom/.pdf-view-restore")
+    (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode))
+
+  (use-package clipmon
+    :elpaca t
+    :init (clipmon-mode)
+    :config
+    (add-to-list 'after-init-hook 'clipmon-persist)
+    (setq savehist-autosave-interval (* 7 60))
+    (setq clipmon-timer-interval 2)
+    (setq clipmon-autoinsert-color "green")
+    (setq clipmon-autoinsert-timeout 8))
 
   (use-package perspective
     :elpaca t
@@ -271,16 +299,15 @@ Add w3m browser support (EXWM Exclusive?)
     :init (persp-mode))
 
   (use-package avy :elpaca t)
-  (use-package ace-jump-buffer
-  :elpaca t
-  :config)
+  (use-package ace-jump-buffer :elpaca t)
+  (use-package vimish-fold :elpaca t :init (vimish-fold-global-mode 1))
 
   (use-package sublimity
-		:elpaca t
-		:config
-	(setq sublimity-scroll-vertical-frame-delay 0.01)
-	(setq sublimity-scroll-weight 5
-      sublimity-scroll-drift-length 10))
+    :elpaca t
+    :config
+    (setq sublimity-scroll-vertical-frame-delay 0.01)
+    (setq sublimity-scroll-weight 5
+        sublimity-scroll-drift-length 10))
 
   (use-package treemacs :elpaca t)
   (use-package ranger
@@ -320,10 +347,21 @@ for now.
     (setq lsp-warn-no-matched-clients nil)
     :commands lsp)
   ;; Technically "Extra" LSP Packages
-  (use-package lsp-ui :elpaca t :commands lsp-ui-mode) 
+  (use-package lsp-ui
+    :elpaca t
+    :commands lsp-ui-mode
+    :config
+    (lsp-ui-peek-enable t)
+    (lsp-ui-doc-enable t)
+    (lsp-ui-doc-delay 3)
+    (lsp-ui-doc-show-with-cursor t)
+    (lsp-ui-doc-show-with-mouse t)
+
+) 
   (use-package lsp-ivy :elpaca t :commands lsp-ivy-workspace-symbol)
   (use-package lsp-treemacs :elpaca t :commands lsp-treemacs-errors-list)
   (use-package dap-mode :elpaca t)
+  (use-package company-box :elpaca t :config (add-hook 'company-mode #'company-box-mode))
   (use-package company :elpaca t :config (add-hook 'prog-mode-hook #'global-company-mode))
 #+end_src
 **** Language Modes & guess what... a translator?
@@ -345,6 +383,7 @@ that can translate text using your search engine of choice!
 
   (use-package yuck-mode :elpaca t)
   (use-package nix-mode :elpaca t)
+  (use-package json-mode :elpaca t)
   
   (use-package rust-mode :elpaca t :config (add-hook 'rust-mode-hook #'cargo-minor-mode))
   (use-package cargo :elpaca t)
@@ -352,8 +391,8 @@ that can translate text using your search engine of choice!
   (use-package zig-mode :elpaca t)
 
   (use-package gdscript-mode :elpaca t)
-  ;;(use-package csharp-mode :elpaca t) ;; Apart of Emacs29
   (use-package typescript-mode :elpaca t)
+  (use-package npm :elpaca t)
   (use-package kotlin-mode :elpaca t)
 
   (use-package nim-mode :elpaca t)  
@@ -424,14 +463,12 @@ Now for GOD-Mode, I still have to define it's purpose in comparison to EVIL.
       :keymaps 'override
       :prefix  "SPC")
 
-    ;; God Mode Setup
-    (general-create-definer snor/GOD
-      :keymaps 'override)
+    ;; Key-Chord Bindings
+    (general-create-definer snor/chord-mappings :keymaps 'override) 
 
-    ;; EXWM Setup
-    (general-create-definer snor/exwm
-      :states 'normal
-      :keymaps 'override) 
+    ;; God Mode Setup
+    (general-create-definer snor/GOD :keymaps 'override)
+
     
     (snor/leader-mappings-norm
       ;; Buffer Management
@@ -446,25 +483,17 @@ Now for GOD-Mode, I still have to define it's purpose in comparison to EVIL.
       ;; D | Leader
       "d"       '(:ignore t                    :wk "Section D")
 
-			"d l"     '(:ignore t                    :wk "Literate Calc")
+      "d l"     '(:ignore t                    :wk "Literate Calc")
       "d l l"   '(literate-calc-eval-buffer    :wk "Evaluates Buffer")
       "d l j"   '(literate-calc-clear-overlays :wk "Clears Current Buffer Evaluations")
 
-			"d f"     '(:ignore t                    :wk "File Options")
+      "d f"     '(:ignore t                    :wk "File Options")
       "d f d"   '(delete-file                  :wk "Select A File To Delete")
       "d f r"   '(rename-file                  :wk "Select A File To Rename")
       "d f c"   '(copy-file                    :wk "Select A File To Copy")
-			"d f t"   '(move-file-to-trash           :wk "Select A File To Trash")
+      "d f t"   '(move-file-to-trash           :wk "Select A File To Trash")
 
-      ;; "d"       '(                 :wk "")
-      ;; "d"       '(                 :wk "")
-      ;; "d"       '(                 :wk "")
-      ;; "d"       '(                 :wk "")
-      ;; "d"       '(                 :wk "")
-      ;; "d"       '(                 :wk "")
-
-
-      ;; GOD MODE SETTINGS
+      ;; God-Mode Settings
       "g"       '(:ignore t                 :wk "GOD MODE MAPPINGS")
       "g g"     '(snor/evil-god-mode-all    :wk "SWITCH TO GOD MODE GLOBAL")
       "g l"     '(snor/evil-god-local-mode  :wk "SWITCH TO GOD MODE BUFFER")
@@ -480,16 +509,17 @@ Now for GOD-Mode, I still have to define it's purpose in comparison to EVIL.
       "o"       '(:ignore t                 :wk "Org Mode Options")
       "o df"    '(org-babel-tangle          :wk "Babel Tangle File")
 
-      ;; MISC
+      ;; Misc
       "f"       '(find-file                 :wk "Find & Open File"))
 
     (snor/leader-mappings-vis
       ;; Visual Mode Leader Mappings
-      "s t" '(gts-do-translate              :wk "Translates Region")
-	    "s T" '(untabify                      :wk "Removes <Tab> From Region")		
-      "s j" '(crux-upcase-region            :wk "Converts Region To Uppercase")
-	    "s k" '(crux-downcase-region          :wk "Converts Region To Lowercase")		
-			"s f" '(comment-or-uncomment-region   :wk "Comments/Uncomments Region"))
+      "v"   '(:ignore t                     :wk "Visual Mode Bindings")   
+      "v t" '(gts-do-translate              :wk "Translates Region")
+      "v T" '(untabify                      :wk "Removes <Tab> From Region")    
+      "v j" '(crux-upcase-region            :wk "Converts Region To Uppercase")
+      "v k" '(crux-downcase-region          :wk "Converts Region To Lowercase")   
+      "v f" '(comment-or-uncomment-region   :wk "Comments/Uncomments Region"))
 
     (snor/localleader-mappings-norm
       ;; WINDOW MANAGEMENT
@@ -504,12 +534,15 @@ Now for GOD-Mode, I still have to define it's purpose in comparison to EVIL.
 
       "s k" '(delete-window             :wk "Delete Current Window")
 
-  		;; Calendar
-  		"c l" '(cfw:open-org-calendar     :wk "Launches Org-Calendar")
+      ;; Calendar
+      "c"   '(:ignore t                 :wk "Calendar Options")
+      "c l" '(cfw:open-org-calendar     :wk "Launches Org-Calendar")
 
       ;; Misc
       "t" '(treemacs                     :wk "Toggle Treemacs")
-      
+      "f" '(vimish-fold-toggle           :wk "Toggle Code Fold")     
+      "F" '(vimish-fold-toggle-all       :wk "Toggle Code Fold")
+
       ;; Workspaces/Persp-Mode
       "<tab>"   '(:ignore t    :wk "Workspaces")
 
@@ -526,7 +559,7 @@ Now for GOD-Mode, I still have to define it's purpose in comparison to EVIL.
 
       "<tab> k" '(persp-next   :wk "Switch to Next Workspace")
       "<tab> j" '(persp-prev   :wk "Switch to Previous Workspace")
-      "<tab> q" '(persp-kill   :wk "Kill Current Workspace"))
+      "<tab> q" '(persp-kill   :wk "Kill A Workspace"))
 
     (snor/GOD
       ;; Movement
@@ -542,7 +575,12 @@ Now for GOD-Mode, I still have to define it's purpose in comparison to EVIL.
       "C-W" '(move-beginning-of-line    :wk "Move to the Start of the Line")
 
       "C-?" '(snor/god-mode-manual      :wk "Opens God-Mode Manual")
-      "C-;" '(snor/become-human         :wk "Return to Human State")))
+      "C-;" '(snor/become-human         :wk "Return to Human State"))
+
+    (snor/chord-mappings
+      ;; LSP-Mode Movement
+      "M-j" '(company-select-next       :wk "Company-Mode Down")
+      "M-k" '(company-select-previous   :wk "Company-Mode Up")))
 
   (use-package evil
     :elpaca t
