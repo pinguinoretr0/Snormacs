@@ -1,4 +1,4 @@
-  (defvar elpaca-installer-version 0.5)
+  (defvar elpaca-installer-version 0.6)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
   (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -68,8 +68,8 @@
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
 
-  (require 'elcord-rs)
-  (elcord-rs-init-message "Initialization Status: [O K]") ;; States that everything is working on startup buffer
+;;  (require 'elcord-rs)
+;;  (elcord-rs-init-message "Initialization Status: [O K]") ;; States that everything is working on startup buffer
 
   (use-package doom-themes
     :elpaca t
@@ -143,9 +143,12 @@
   (use-package rainbow-mode :elpaca t :config (add-hook 'prog-mode-hook (lambda () (rainbow-mode))))
 
   ;; Remember to M-x all-the-icons-install-fonts & nerd-icons-install-fonts
+  (use-package treemacs :elpaca t) ;; Required here or else a dependency blockage accurs
   (use-package all-the-icons :elpaca t :if (display-graphic-p))
   (use-package nerd-icons :elpaca t)
   (use-package treemacs-all-the-icons :elpaca t :config (treemacs-load-theme "all-the-icons"))
+
+  (use-package vterm :elpaca t)
 
   (use-package calfw :elpaca t)
   (use-package calfw-org
@@ -204,7 +207,6 @@
     (setq sublimity-scroll-weight 5
         sublimity-scroll-drift-length 10))
 
-  (use-package treemacs :elpaca t)
   (use-package ranger
     :elpaca t
     :init (ranger-override-dired-mode t)
@@ -230,17 +232,7 @@
     (setq lsp-warn-no-matched-clients nil)
     :commands lsp)
   ;; Technically "Extra" LSP Packages
-  (use-package lsp-ui
-    :elpaca t
-    :commands lsp-ui-mode
-    :config
-    (lsp-ui-peek-enable t)
-    (lsp-ui-doc-enable t)
-    (lsp-ui-doc-delay 3)
-    (lsp-ui-doc-show-with-cursor t)
-    (lsp-ui-doc-show-with-mouse t)
-
-) 
+  (use-package lsp-ui :elpaca t :commands lsp-ui-mode) 
   (use-package lsp-ivy :elpaca t :commands lsp-ivy-workspace-symbol)
   (use-package lsp-treemacs :elpaca t :commands lsp-treemacs-errors-list)
   (use-package dap-mode :elpaca t)
@@ -338,6 +330,8 @@
 
       ;; D | Leader
       "d"       '(:ignore t                    :wk "Section D")
+
+      "d r"     '(restart-emacs                :wk "Restarts Emacs")
 
       "d l"     '(:ignore t                    :wk "Literate Calc")
       "d l l"   '(literate-calc-eval-buffer    :wk "Evaluates Buffer")

@@ -5,13 +5,12 @@ The reason I didn't choose Neovim at first is that I liked having
 a GUI & a daemon. I also don't mind using LISP, as long ago I struggled
 finding Neovim documentation for Lua.
 ** Features:
-- EXWM Desktop (I stopped using this so it is unmaintained)
+- EXWM Desktop (Is Stable)
 - Elpaca PKG Manager
-- Calendar Setup (soon)
+- Calendar Setup (In progress)
 - LSP
 - EVIL + GOD Mode
 - ...
-#+TODO: Create an example NixOS configuration with Snormacs' EXWM support
 * Snormacs!
 Alright to get started I will lay out some things first:
 - *A.* I use NixOS so in the future there may be Nix-Related Changes
@@ -51,7 +50,7 @@ blocks from this section can all be found in ~/.emacs.d/init.el.
 Elpaca needs to install itself upon Snormacs' first startup.
 This code will ensure elpaca is installed.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
-  (defvar elpaca-installer-version 0.5)
+  (defvar elpaca-installer-version 0.6)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
   (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -139,8 +138,8 @@ which is the file that contains all of Snormacs' custom code/functions.
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
 
-  (require 'elcord-rs)
-  (elcord-rs-init-message "Initialization Status: [O K]") ;; States that everything is working on startup buffer
+;;  (require 'elcord-rs)
+;;  (elcord-rs-init-message "Initialization Status: [O K]") ;; States that everything is working on startup buffer
 #+end_src
 **** Visuals
 No one wants their editor to look like shit, what else can I say?
@@ -229,6 +228,7 @@ information.
   (use-package rainbow-mode :elpaca t :config (add-hook 'prog-mode-hook (lambda () (rainbow-mode))))
 
   ;; Remember to M-x all-the-icons-install-fonts & nerd-icons-install-fonts
+  (use-package treemacs :elpaca t) ;; Required here or else a dependency blockage accurs
   (use-package all-the-icons :elpaca t :if (display-graphic-p))
   (use-package nerd-icons :elpaca t)
   (use-package treemacs-all-the-icons :elpaca t :config (treemacs-load-theme "all-the-icons"))
@@ -252,6 +252,8 @@ Make a rust lib to read current buffer and update
 discord rpc to a custom status. (Custom EXWM Rust lib after...)
 Add w3m browser support (EXWM Exclusive?)
 #+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  (use-package vterm :elpaca t)
+
   (use-package calfw :elpaca t)
   (use-package calfw-org
     :elpaca t
@@ -309,7 +311,6 @@ Add w3m browser support (EXWM Exclusive?)
     (setq sublimity-scroll-weight 5
         sublimity-scroll-drift-length 10))
 
-  (use-package treemacs :elpaca t)
   (use-package ranger
     :elpaca t
     :init (ranger-override-dired-mode t)
@@ -347,17 +348,7 @@ for now.
     (setq lsp-warn-no-matched-clients nil)
     :commands lsp)
   ;; Technically "Extra" LSP Packages
-  (use-package lsp-ui
-    :elpaca t
-    :commands lsp-ui-mode
-    :config
-    (lsp-ui-peek-enable t)
-    (lsp-ui-doc-enable t)
-    (lsp-ui-doc-delay 3)
-    (lsp-ui-doc-show-with-cursor t)
-    (lsp-ui-doc-show-with-mouse t)
-
-) 
+  (use-package lsp-ui :elpaca t :commands lsp-ui-mode) 
   (use-package lsp-ivy :elpaca t :commands lsp-ivy-workspace-symbol)
   (use-package lsp-treemacs :elpaca t :commands lsp-treemacs-errors-list)
   (use-package dap-mode :elpaca t)
@@ -482,6 +473,8 @@ Now for GOD-Mode, I still have to define it's purpose in comparison to EVIL.
 
       ;; D | Leader
       "d"       '(:ignore t                    :wk "Section D")
+
+      "d r"     '(restart-emacs                :wk "Restarts Emacs")
 
       "d l"     '(:ignore t                    :wk "Literate Calc")
       "d l l"   '(literate-calc-eval-buffer    :wk "Evaluates Buffer")

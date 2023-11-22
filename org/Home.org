@@ -1,3 +1,14 @@
+#+title: The Snormacs Desktop Environment Source Code
+* Intro to EXWM
+I have developed a Desktop Environment configuration for Snormacs that in my
+opinion works really well. This configuration is built off the wonderful EXWM emacs package.
+** Features:
+- Multimedia Keys Support
+- Working & Customizeable Keybindings
+- Wallpaper + Transparency support
+* The Home Configuration
+** EXWM Packages + Init Functions
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/home.el
   ;; EXWM Plugins
   (use-package perspective-exwm :elpaca t)
   (use-package buffer-move :elpaca t)
@@ -44,7 +55,10 @@
 	  (exwm-input-set-key key command)
 	  ;; Alternatively, try general-setq (which calls customize handler)
 	  (exwm-input--update-global-prefix-keys))
-
+#+end_src
+** Init Hook + Bar Settings
+As of right now Snormacs' default bar is polybar, but that will soon be replaced by EWW.
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/home.el
   (setq snor/barp nil)
 
   (defun snor/kill-bar () (interactive)
@@ -64,7 +78,12 @@
 	  (snor/set-command "picom --daemon" nil)
 	  (snor/set-bar)
 	  (snor/set-command "dunst" nil))
-
+#+end_src
+** Window Manager Configuration
+*** Init
+This is the init of the EXWM setup, here many variables and base settings are placed
+into value.
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/home.el
   (use-package exwm
 	  :elpaca t
 	  :init
@@ -101,7 +120,11 @@
     (add-hook 'exwm-update-class-hook
               (lambda ()
                 (exwm-workspace-rename-buffer exwm-class-name)))
-
+#+end_src
+*** Desktop Functions
+Here are functions defined to launch applications and other functions created for
+desktop purposes.
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/home.el
 	(defun exwm/run-term ()
 		(interactive)
 		(start-process-shell-command
@@ -222,7 +245,11 @@
 		(let ((frame (exwm-workspace--workspace-from-frame-or-index workspace-number))
 					(id (exwm--buffer->id (window-buffer))))
 			(exwm-workspace-move-window frame id)))
-
+#+end_src
+*** Desktop Keybindings
+First thing that is defined is exwm-input-prefix keys which sets the prefix keys of Snormacs.
+Those keys will be ignored by applications and ALWAYS passed into Snormacs.
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/home.el
     (setq exwm-input-prefix-keys
 				  '(?\s-\\ ;; Super+Space
 					  ?\C-\\
@@ -315,7 +342,11 @@
 		;; Screenshit
 		(exwm-input-set-key (kbd "<f11>") 'desktop-environment-screenshot)
 		(exwm-enable)) ;; Add at end of config
-
+#+end_src
+*** Desktop Environment Package
+This is the Desktop Environment emacs package which allows for the user to
+bind actions to the FN Multimedia Keys.
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/home.el
   (use-package desktop-environment
 	  :elpaca t
 	  :after exwm
@@ -325,3 +356,4 @@
     (setq desktop-environment-brightness-normal-increment "5%+")
     (setq desktop-environment-brightness-normal-decrement "5%-")
 	  (setq desktop-environment-screenshot-command "flameshot gui"))
+#+end_src
