@@ -61,7 +61,7 @@
   (show-paren-mode 1) 
 
   (load "~/.emacs.d/lisp/elisp.el")
-  (load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
+  ;;(load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
 
   (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Once completed move to .custom
   (add-hook 'evil-write-post-hook #'snor/untabify-on-save)
@@ -73,7 +73,7 @@
 
   (use-package doom-themes
     :elpaca t
-    :init (load-theme 'doom-tokyo-night t) ;; Palenight is my 2nd theme 
+    :init (load-theme 'doom-one t) ;;  tokyo-night is the main theme
     :config
     (setq doom-themes-enable-bold t    
           doom-themes-enable-italic t))
