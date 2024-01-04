@@ -1,3 +1,11 @@
+  ;; Elcord-RS | Custom Elcord code in Rust
+  (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Sets up binary loading
+  (add-to-list 'load-path "~/.emacs.d/lib/elcord-rs/") ;; Rust library path
+  (load-library "libelcord_rs") ;; Loads custom elcord library
+  (require 'elcord-rs) ;; requires custom elcord library for usage
+  (elcord-rs-init-message "Initialization Status: [O K]") ;; states everything is ok upon startup 
+  ;;(elcord-rs-spawn-xorg-init-window)
+
   ;; EXWM Plugins
   (use-package perspective-exwm :elpaca t)
   (use-package buffer-move :elpaca t)
@@ -69,7 +77,7 @@
     :elpaca t
     :init
     ;; Stops asking to replace current Window Manager, if there is a current session
-    (setq exwm-replace -1) 
+    (setq exwm-replace nil) 
     (setq mouse-autoselect-window nil
           focus-follows-mouse t)
     (perspective-exwm-mode)

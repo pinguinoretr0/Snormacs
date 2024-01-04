@@ -61,22 +61,29 @@
   (show-paren-mode 1) 
 
   (load "~/.emacs.d/lisp/elisp.el")
-  ;;(load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
+  (load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
 
-  (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Once completed move to .custom
   (add-hook 'evil-write-post-hook #'snor/untabify-on-save)
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
 
-;;  (require 'elcord-rs)
-;;  (elcord-rs-init-message "Initialization Status: [O K]") ;; States that everything is working on startup buffer
+  (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Rust libraries $PATHs
+  (add-to-list 'load-path "~/.emacs.d/lib/snormacs-rs/")
+  
+  (load-library "libsnormacs_rs") ;; Load the rust libraries
+  (require 'snormacs-rs)
+  (snormacs-rs-init-msg)
 
   (use-package doom-themes
     :elpaca t
-    :init (load-theme 'doom-one t) ;;  tokyo-night is the main theme
+;;    :init (load-theme 'doom-one t) ;; tokyo-night is the main theme
     :config
     (setq doom-themes-enable-bold t    
           doom-themes-enable-italic t))
+
+  (use-package timu-rouge-theme
+    :elpaca t
+    :init (load-theme 'timu-rouge t))
 
   ;; Completion Setup
   (use-package ivy :elpaca t :init (ivy-mode))
@@ -388,8 +395,14 @@
       "c"   '(:ignore t                 :wk "Calendar Options")
       "c l" '(cfw:open-org-calendar     :wk "Launches Org-Calendar")
 
+      ;; Treemacs
+      "T"   '(treemacs                                :wk "Toggle Treemacs")
+      "t a" '(treemacs-add-project-to-workspace       :wk "Adds Project to Treemacs")
+      "t d" '(treemacs-remove-project-from-workspace  :wk "Removes Project from Treemacs")
+      "t r" '(treemacs-rename-project                 :wk "Renames Treemacs Project")
+      "t c" '(treemacs-collapse-project               :wk "Collapses Treemacs Project")
+
       ;; Misc
-      "t" '(treemacs                     :wk "Toggle Treemacs")
       "f" '(vimish-fold-toggle           :wk "Toggle Code Fold")     
       "F" '(vimish-fold-toggle-all       :wk "Toggle Code Fold")
 

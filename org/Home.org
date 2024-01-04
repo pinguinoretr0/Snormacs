@@ -9,6 +9,14 @@ opinion works really well. This configuration is built off the wonderful EXWM em
 * The Home Configuration
 ** EXWM Packages + Init Functions
 #+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/home.el
+  ;; Elcord-RS | Custom Elcord code in Rust
+  (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Sets up binary loading
+  (add-to-list 'load-path "~/.emacs.d/lib/elcord-rs/") ;; Rust library path
+  (load-library "libelcord_rs") ;; Loads custom elcord library
+  (require 'elcord-rs) ;; requires custom elcord library for usage
+  (elcord-rs-init-message "Initialization Status: [O K]") ;; states everything is ok upon startup 
+  ;;(elcord-rs-spawn-xorg-init-window)
+
   ;; EXWM Plugins
   (use-package perspective-exwm :elpaca t)
   (use-package buffer-move :elpaca t)
