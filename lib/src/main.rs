@@ -1,10 +1,7 @@
 use clap::Parser;
-use regex::Regex;
 use std::{
 		env,
 		fs,
-		fs::File,
-		io::{self, Read},
 		process::Command,
 };
 
