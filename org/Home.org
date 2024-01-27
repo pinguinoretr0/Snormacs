@@ -16,7 +16,7 @@ opinion works really well. This configuration is built off the wonderful EXWM em
   (load-library "libelcord_rs") ;; Loads custom elcord library
   (require 'elcord-rs) ;; requires custom elcord library for usage
   (elcord-rs-init-message) ;; states everything is ok upon startup 
-  (elcord-rs-print-xorg-window) ;; prints current active window 
+ ;; (elcord-rs-print-xorg-window) ;; prints current active window 
 
   ;; EXWM Plugins
   (use-package perspective-exwm :elpaca t)

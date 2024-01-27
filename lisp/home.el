@@ -1,10 +1,10 @@
-  ;; Elcord-RS | Custom Elcord code in Rust
+  ;; Elcord-RS | Custom Elcord code in Rust | Check the *Messages* buffer for more information
   (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Sets up binary loading
   (add-to-list 'load-path "~/.emacs.d/lib/elcord-rs/") ;; Rust library path
   (load-library "libelcord_rs") ;; Loads custom elcord library
   (require 'elcord-rs) ;; requires custom elcord library for usage
-  (elcord-rs-init-message "Initialization Status: [O K]") ;; states everything is ok upon startup 
-  ;;(elcord-rs-spawn-xorg-init-window)
+  (elcord-rs-init-message) ;; states everything is ok upon startup 
+ ;; (elcord-rs-print-xorg-window) ;; prints current active window 
 
   ;; EXWM Plugins
   (use-package perspective-exwm :elpaca t)
@@ -44,7 +44,7 @@
 
   (defun snor/update-wallpaper () (interactive)
     (start-process-shell-command
-     "feh" nil "feh --bg-scale ~/.emacs.d/.custom/wallpapers/sleepy-pt2.jpg"))
+     "feh" nil "feh --bg-scale ~/Pictures/Wallpapers/space.jpg"))
 
   (defun snor/exwm-input-set-key (key command)
     "Similar to `exwm-input-set-key', but always refreshes prefix keys.

@@ -39,6 +39,16 @@
     (elpaca-use-package-mode)
     (setq elpaca-use-package-by-default t))
   (elpaca-wait)
+  (defun +elpaca-unload-seq (e)
+   (and (featurep 'seq) (unload-feature 'seq t))
+    (elpaca--continue-build e))
+
+  (defun +elpaca-seq-build-steps ()
+    (append (butlast (if (file-exists-p (expand-file-name "seq" elpaca-builds-directory))
+                         elpaca--pre-built-steps elpaca-build-steps))
+            (list '+elpaca-unload-seq 'elpaca--activate-package)))
+
+  (use-package seq :elpaca `(seq :build ,(+elpaca-seq-build-steps)))
 
   (use-package no-littering
   :elpaca t
@@ -52,6 +62,7 @@
   (add-to-list 'default-frame-alist '(font . "Comic Mono:9" )) ;; Sets font to Comic Mono (comment this line for default)
   (add-hook 'prog-mode-hook 'global-display-line-numbers-mode)
   (add-hook 'text-mode-hook 'visual-line-mode)
+  (global-hl-line-mode 1)
 
   (setq-default cursor-in-non-selected-windows nil)
   (setq indent-tabs-mode nil)
@@ -61,7 +72,7 @@
   (show-paren-mode 1) 
 
   (load "~/.emacs.d/lisp/elisp.el")
-  (load "~/.emacs.d/lisp/home.el") ;; Home.el is the EXWM configuration, commented out as I dont need it
+  (load "~/.emacs.d/lisp/home.el") ;; EXWM Configuration 
 
   (add-hook 'evil-write-post-hook #'snor/untabify-on-save)
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
@@ -72,18 +83,14 @@
   
   (load-library "libsnormacs_rs") ;; Load the rust libraries
   (require 'snormacs-rs)
-  (snormacs-rs-init-msg)
+ ;; (snormacs-rs-init-msg)
 
   (use-package doom-themes
     :elpaca t
-;;    :init (load-theme 'doom-one t) ;; tokyo-night is the main theme
+    :init (load-theme 'doom-tokyo-night t) ;; tokyo-night is the main theme
     :config
     (setq doom-themes-enable-bold t    
           doom-themes-enable-italic t))
-
-  (use-package timu-rouge-theme
-    :elpaca t
-    :init (load-theme 'timu-rouge t))
 
   ;; Completion Setup
   (use-package ivy :elpaca t :init (ivy-mode))
@@ -98,7 +105,7 @@
     ;; Set the title
     (setq dashboard-banner-logo-title "Welcome to Snormacs")
     ;; Set the banner
-    (setq dashboard-startup-banner "~/.emacs.d/.custom/.dashboard_logos/snorlax.txt")
+    (setq dashboard-startup-banner "~/.emacs.d/.custom/.dashboard_logos/pingu.txt")
 
     ;; Content is not centered by default. To center, set
     (setq dashboard-center-content t)
@@ -381,8 +388,8 @@
     (snor/localleader-mappings-norm
       ;; WINDOW MANAGEMENT
       "s"   '(:ignore t                 :wk "Split Windows Prefix")
-      "s s" '(split-window-vertically   :wk "Split Window Vertically")
-      "s h" '(split-window-horizontally :wk "Split Window Horizontally")
+      "s s" '(split-window-vertically   :wk "Split Window Horizontally")
+      "s h" '(split-window-horizontally :wk "Split Window Vertically")
 
       "h"   '(windmove-left             :wk "Move Window Focus to the Left")
       "j"   '(windmove-down             :wk "Move Window Focus to the Down")
@@ -443,7 +450,10 @@
     (snor/chord-mappings
       ;; LSP-Mode Movement
       "M-j" '(company-select-next       :wk "Company-Mode Down")
-      "M-k" '(company-select-previous   :wk "Company-Mode Up")))
+      "M-k" '(company-select-previous   :wk "Company-Mode Up")
+
+      ;; Misc
+      "M-RET" '(vterm              :wk "Spawn Terminal")))
 
   (use-package evil
     :elpaca t
@@ -472,7 +482,7 @@
     :elpaca t
     :init (org-mode)
     :config
-    (evil-define-key 'normal 'global (kbd "<tab>") 'org-cycle)
+    ;;(evil-define-key 'normal 'global (kbd "<tab>") 'org-cycle)
 
     (setq org-src-preserve-indentation t)
     (setq org-startup-indented t)           
