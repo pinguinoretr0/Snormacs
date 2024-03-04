@@ -48,10 +48,9 @@
                          elpaca--pre-built-steps elpaca-build-steps))
             (list '+elpaca-unload-seq 'elpaca--activate-package)))
 
-  (use-package seq :elpaca `(seq :build ,(+elpaca-seq-build-steps)))
+  (use-package seq :ensure `(seq :build ,(+elpaca-seq-build-steps)))
 
   (use-package no-littering
-  :elpaca t
   :config
   (setq no-littering-etc-directory
       (expand-file-name ".config/" user-emacs-directory))
@@ -62,8 +61,10 @@
   (add-to-list 'default-frame-alist '(font . "Comic Mono:9" )) ;; Sets font to Comic Mono (comment this line for default)
   (add-hook 'prog-mode-hook 'global-display-line-numbers-mode)
   (add-hook 'text-mode-hook 'visual-line-mode)
+  (add-hook 'after-save-hook 'snor/untabify-buffer)
   (global-hl-line-mode 1)
 
+  (setq warning-minimum-level :emergency)
   (setq-default cursor-in-non-selected-windows nil)
   (setq indent-tabs-mode nil)
   (setq tab-width 2)
@@ -71,8 +72,7 @@
   (electric-pair-mode 1)
   (show-paren-mode 1) 
 
-  (load "~/.emacs.d/lisp/elisp.el")
-  (load "~/.emacs.d/lisp/home.el") ;; EXWM Configuration 
+  (load "~/.emacs.d/lisp/elisp.el") ;; Load extra Snormacs functions
 
   (add-hook 'evil-write-post-hook #'snor/untabify-on-save)
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
@@ -83,21 +83,25 @@
   
   (load-library "libsnormacs_rs") ;; Load the rust libraries
   (require 'snormacs-rs)
- ;; (snormacs-rs-init-msg)
+  (load "~/.emacs.d/lisp/home.el") ;; EXWM Configuration
 
   (use-package doom-themes
-    :elpaca t
-    :init (load-theme 'doom-tokyo-night t) ;; tokyo-night is the main theme
+    :init (load-theme 'doom-challenger-deep t) ;; tokyo-night is the main theme
     :config
     (setq doom-themes-enable-bold t    
           doom-themes-enable-italic t))
 
   ;; Completion Setup
-  (use-package ivy :elpaca t :init (ivy-mode))
-  (use-package projectile :elpaca t)
+  (use-package helm
+    :init (helm-mode)
+    :config
+    (global-set-key (kbd "M-x") 'helm-M-x)
+    (with-eval-after-load 'helm
+      (define-key helm-map (kbd "M-j")       #'helm-next-line)
+      (define-key helm-map (kbd "M-k")       #'helm-previous-line)))
+  (use-package projectile)
 
   (use-package dashboard
-    :elpaca t
     :after projectile
     :config
     (dashboard-setup-startup-hook)
@@ -105,7 +109,7 @@
     ;; Set the title
     (setq dashboard-banner-logo-title "Welcome to Snormacs")
     ;; Set the banner
-    (setq dashboard-startup-banner "~/.emacs.d/.custom/.dashboard_logos/pingu.txt")
+    (setq dashboard-startup-banner "~/.emacs.d/.custom/.dashboard_logos/fpython.txt")
 
     ;; Content is not centered by default. To center, set
     (setq dashboard-center-content t)
@@ -132,14 +136,12 @@
     (setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda))
 
   (use-package which-key
-    :elpaca t
     :config
     (setq which-key-idle-delay 0.2)
     :init (which-key-mode))
-  (use-package beacon :elpaca t :init (beacon-mode))
+  (use-package beacon :init (beacon-mode))
 
   (use-package doom-modeline
-    :elpaca t
     :init (doom-modeline-mode)
     :custom
     (doom-modeline-height 28)
@@ -154,39 +156,37 @@
     (doom-modeline-enable-word-count t)
     (doom-modeline-buffer-file-name-style 'truncate-with-project))
 
-  (use-package rainbow-mode :elpaca t :config (add-hook 'prog-mode-hook (lambda () (rainbow-mode))))
+  (use-package rainbow-mode :config (add-hook 'prog-mode-hook (lambda () (rainbow-mode))))
 
   ;; Remember to M-x all-the-icons-install-fonts & nerd-icons-install-fonts
-  (use-package treemacs :elpaca t) ;; Required here or else a dependency blockage accurs
-  (use-package all-the-icons :elpaca t :if (display-graphic-p))
-  (use-package nerd-icons :elpaca t)
-  (use-package treemacs-all-the-icons :elpaca t :config (treemacs-load-theme "all-the-icons"))
+  (use-package treemacs) ;; Required here or else a dependency blockage accurs
+  (use-package all-the-icons :if (display-graphic-p))
+  (use-package nerd-icons)
+  (use-package treemacs-all-the-icons :config (treemacs-load-theme "all-the-icons"))
 
-  (use-package vterm :elpaca t)
+  (use-package vterm)
 
-  (use-package calfw :elpaca t)
+  (use-package calfw)
   (use-package calfw-org
-    :elpaca t
     :config
     (setq cfw:org-agenda-schedule-args '(:timestamp))) ;; TODO // Create calendar setup
 
-  (use-package typo :elpaca t :init (typo-global-mode 1))
-  (use-package speed-type :elpaca t)
+  (use-package typo :init (typo-global-mode 1))
+  (use-package speed-type)
 
-  (use-package magit :elpaca t)
-  (use-package restart-emacs :elpaca t)
-  (use-package crux :elpaca t)
-  (use-package eat :elpaca t)
+  (use-package magit)
+  (use-package restart-emacs)
+  (use-package crux)
+  (use-package eat)
 
-  (use-package literate-calc-mode :elpaca t :init (literate-calc-mode))
-  (use-package move-text :elpaca t)
+  (use-package literate-calc-mode :init (literate-calc-mode))
+  (use-package move-text)
   (use-package aggressive-indent
-    :elpaca t
     :config
     (global-aggressive-indent-mode 1)
     (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
-  (use-package pdf-tools :elpaca t)
+  (use-package pdf-tools)
   (use-package pdf-view-restore
     :after pdf-tools
     :config
@@ -194,7 +194,6 @@
     (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode))
 
   (use-package clipmon
-    :elpaca t
     :init (clipmon-mode)
     :config
     (add-to-list 'after-init-hook 'clipmon-persist)
@@ -204,41 +203,37 @@
     (setq clipmon-autoinsert-timeout 8))
 
   (use-package perspective
-    :elpaca t
     :custom
     (persp-mode-prefix-key (kbd "C-."))
     (persp-initial-frame-name "1")
     :init (persp-mode))
 
-  (use-package avy :elpaca t)
-  (use-package ace-jump-buffer :elpaca t)
-  (use-package vimish-fold :elpaca t :init (vimish-fold-global-mode 1))
+  (use-package avy)
+  (use-package ace-jump-buffer)
+  (use-package vimish-fold :init (vimish-fold-global-mode 1))
 
   (use-package sublimity
-    :elpaca t
     :config
     (setq sublimity-scroll-vertical-frame-delay 0.01)
     (setq sublimity-scroll-weight 5
         sublimity-scroll-drift-length 10))
 
   (use-package ranger
-    :elpaca t
     :init (ranger-override-dired-mode t)
     :config
     (setq ranger-cleanup-eagerly t)
     (setq ranger-modify-header t)
     (setq ranger-show-hidden t))
 
-  (use-package multiple-cursors :elpaca t)
-  (use-package sudo-edit :elpaca t)
-  (use-package sudo-utils :elpaca t)
-  (use-package elcord :elpaca t :init (elcord-mode))
+  (use-package multiple-cursors)
+  (use-package sudo-edit)
+  (use-package sudo-utils)
+  (use-package elcord :init (elcord-mode))
 
-  (use-package tree-sitter :elpaca t :init (global-tree-sitter-mode))
-  (use-package tree-sitter-langs :elpaca t)
+  (use-package tree-sitter :init (global-tree-sitter-mode))
+  (use-package tree-sitter-langs)
 
   (use-package lsp-mode
-    :elpaca t
     :init (setq lsp-keymap-prefix "C-c l")
     (add-hook 'prog-mode-hook #'lsp)
     (add-hook 'lsp-mode #'lsp-enable-which-key-integration)
@@ -246,15 +241,19 @@
     (setq lsp-warn-no-matched-clients nil)
     :commands lsp)
   ;; Technically "Extra" LSP Packages
-  (use-package lsp-ui :elpaca t :commands lsp-ui-mode) 
-  (use-package lsp-ivy :elpaca t :commands lsp-ivy-workspace-symbol)
-  (use-package lsp-treemacs :elpaca t :commands lsp-treemacs-errors-list)
-  (use-package dap-mode :elpaca t)
-  (use-package company-box :elpaca t :config (add-hook 'company-mode #'company-box-mode))
-  (use-package company :elpaca t :config (add-hook 'prog-mode-hook #'global-company-mode))
+  (use-package lsp-ui :commands lsp-ui-mode) 
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+  (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+  (use-package dap-mode)
+  (use-package company-box :config (add-hook 'company-mode #'company-box-mode))
+  (use-package company
+    :config
+    (add-hook 'prog-mode-hook #'global-company-mode)
+    (with-eval-after-load 'company
+      (define-key company-active-map (kbd "M-j") #'company-select-next)
+      (define-key company-active-map (kbd "M-k") #'company-select-previous)))
 
   (use-package paredit ;; The most useful shit for LISP (wraps parentheses & quotes)
-    :elpaca t
     :init (autoload 'enable-paredit-mode "paredit" t)
     :config
     (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
@@ -265,34 +264,34 @@
     (add-hook 'scheme-mode-hook #'enable-paredit-mode)
     (add-hook 'yuck-mode-hook #'enable-paredit-mode))
 
-  (use-package yuck-mode :elpaca t)
-  (use-package nix-mode :elpaca t)
-  (use-package json-mode :elpaca t)
+  (use-package yuck-mode)
+  (use-package nix-mode)
+  (use-package json-mode)
   
-  (use-package rust-mode :elpaca t :config (add-hook 'rust-mode-hook #'cargo-minor-mode))
-  (use-package cargo :elpaca t)
-  (use-package go-mode :elpaca t)
-  (use-package zig-mode :elpaca t)
+  (use-package rust-mode :config (add-hook 'rust-mode-hook #'cargo-minor-mode))
+  (use-package cargo)
+  (use-package go-mode)
+  (use-package zig-mode)
 
-  (use-package gdscript-mode :elpaca t)
-  (use-package typescript-mode :elpaca t)
-  (use-package npm :elpaca t)
-  (use-package kotlin-mode :elpaca t)
+  (use-package gdscript-mode)
+  (use-package typescript-mode)
+  (use-package npm)
+  (use-package kotlin-mode)
 
-  (use-package nim-mode :elpaca t)  
-  (use-package lua-mode :elpaca t)
+  (use-package nim-mode)  
+  (use-package lua-mode)
+  (use-package v-mode)
 
-  (use-package haskell-mode :elpaca t)
-  (use-package fsharp-mode :elpaca t)
-  (use-package elixir-mode :elpaca t)
-  (use-package clojure-mode :elpaca t)
+  (use-package haskell-mode)
+  (use-package fsharp-mode)
+  (use-package elixir-mode)
+  (use-package clojure-mode)
 
-  (use-package geiser :elpaca t)
-  (use-package geiser-guile :elpaca t)
+  (use-package geiser)
+  (use-package geiser-guile)
   
 
   (use-package go-translate
-    :elpaca t
     :config
     (setq gts-translate-list '(("en" "ja") ("en" "es"))) ;; Add a longer list if you want to
 
@@ -303,7 +302,6 @@
            :render (gts-buffer-render))))
 
   (use-package general
-    :elpaca t
     :config
     (general-evil-setup)
     (setq evil-want-keybinding nil)
@@ -374,7 +372,7 @@
       "o df"    '(org-babel-tangle          :wk "Babel Tangle File")
 
       ;; Misc
-      "f"       '(find-file                 :wk "Find & Open File"))
+      "f"       '(helm-find-files           :wk "Find & Open File"))
 
     (snor/leader-mappings-vis
       ;; Visual Mode Leader Mappings
@@ -448,15 +446,10 @@
       "C-;" '(snor/become-human         :wk "Return to Human State"))
 
     (snor/chord-mappings
-      ;; LSP-Mode Movement
-      "M-j" '(company-select-next       :wk "Company-Mode Down")
-      "M-k" '(company-select-previous   :wk "Company-Mode Up")
-
       ;; Misc
       "M-RET" '(vterm              :wk "Spawn Terminal")))
 
   (use-package evil
-    :elpaca t
     :init (evil-mode)
     :config
     (setq-default tab-width 2)
@@ -465,21 +458,19 @@
     (evil-define-key 'insert 'global (kbd "M-e") 'evil-normal-state)
     (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
     ;; Extra stuff for Evil
-    (use-package evil-god-state :elpaca t :after evil)
-    (use-package evil-collection :elpaca t :after evil)
+    (use-package evil-god-state :after evil)
+    (use-package evil-collection :after evil)
 
   (use-package god-mode
-    :elpaca t
     :after evil
     :config
     (setq god-exempt-major-modes nil)
     (setq god-exempt-predicates nil)
     (setq god-mode-enable-function-key-translation nil))
 
-  (use-package hydra :elpaca t)
+  (use-package hydra)
 
   (use-package org
-    :elpaca t
     :init (org-mode)
     :config
     ;;(evil-define-key 'normal 'global (kbd "<tab>") 'org-cycle)
@@ -489,14 +480,13 @@
     (setq org-startup-with-inline-images t)
     (setq org-src-fontify-natively t))
 
-  (use-package org-roam :elpaca t :after org)
+  (use-package org-roam :after org)
 
   (use-package org-superstar 
-    :elpaca t
     :after org-roam
     :config (add-hook 'org-mode-hook (lambda () (org-superstar-mode))))
 
-  (use-package org-present :elpaca t :after org-roam)
+  (use-package org-present :after org-roam)
 
     (custom-set-variables
    ;; custom-set-variables was added by Custom.

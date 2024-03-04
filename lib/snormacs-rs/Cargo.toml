@@ -1,7 +1,7 @@
 [package]
 name = "snormacs-rs"
 authors = ["TheLinuxPirate"]
-version = "0.0.0"
+version = "0.0.3"
 edition = "2021"
 
 [lib]
@@ -9,3 +9,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 emacs = "0.18.0"
+rodio = "0.17.3"

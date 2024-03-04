@@ -15,12 +15,11 @@ opinion works really well. This configuration is built off the wonderful EXWM em
   (add-to-list 'load-path "~/.emacs.d/lib/elcord-rs/") ;; Rust library path
   (load-library "libelcord_rs") ;; Loads custom elcord library
   (require 'elcord-rs) ;; requires custom elcord library for usage
-  (elcord-rs-init-message) ;; states everything is ok upon startup 
- ;; (elcord-rs-print-xorg-window) ;; prints current active window 
+  (elcord-rs-main) ;; runs the elcord-rs process
 
   ;; EXWM Plugins
-  (use-package perspective-exwm :elpaca t)
-  (use-package buffer-move :elpaca t)
+  (use-package perspective-exwm)
+  (use-package buffer-move)
 
   ;; Custom Functions
   (defun snor/desktop-manual () (interactive)
@@ -94,7 +93,6 @@ This is the init of the EXWM setup, here many variables and base settings are pl
 into value.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/home.el
   (use-package exwm
-    :elpaca t
     :init
     ;; Stops asking to replace current Window Manager, if there is a current session
     (setq exwm-replace nil) 
@@ -357,7 +355,6 @@ This is the Desktop Environment emacs package which allows for the user to
 bind actions to the FN Multimedia Keys.
 #+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/home.el
   (use-package desktop-environment
-    :elpaca t
     :after exwm
     :config (desktop-environment-mode)
     (setq desktop-environment-brightness-small-increment "2%+")

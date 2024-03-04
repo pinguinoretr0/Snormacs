@@ -19,15 +19,15 @@ emacs::plugin_is_GPL_compatible!();
 #[emacs::module(name = "elcord-rs")]
 fn init(env: &Env) -> Result<Value<'_>> {
     // in *Messages* buffer print everything loaded fine
-    env.message("Elcord-RS Initialization Status: [O K]\nLoaded \'Elcord-RS\'!")
+    env.message("Loaded \'Elcord-RS\'!")
 }
 
 // prints boolean value if Xorg is active or not
-fn check_xorg_status() -> &'static str {
+fn check_xorg_status(env: &Env) -> Result<Value<'_>> {
     if let Ok(_) = Connection::connect(None) {
-        "(Elcord-RS)Xorg_Status: Stable connection"
+        env.message(&format!("(Elcord-RS)Xorg_Status: Stable connection"))
     } else {
-        "(Elcord-RS)Xorg_Status: Cannot connect"
+        env.message(&format!("(Elcord-RS)Xorg_Status: Cannot connection"))
     }
 }
 
@@ -98,7 +98,7 @@ fn print_xorg_title(env: &Env) -> Result<Value<'_>> {
 
 #[defun]
 fn main(env: &Env) -> Result<Value<'_>> {
-    env.message(&format!("{}", check_xorg_status()))
+    check_xorg_status(env)
 }
 // grabs title of current X window & prints it
 // #[defun]
