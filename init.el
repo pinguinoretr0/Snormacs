@@ -78,7 +78,7 @@
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
 
-  (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Rust libraries $PATHs
+  (add-to-list 'load-path "~/.emacs.d/lib/target/debug/") ;; Rust libraries PATHs
   (add-to-list 'load-path "~/.emacs.d/lib/snormacs-rs/")
   
   (load-library "libsnormacs_rs") ;; Load the rust libraries
@@ -86,7 +86,7 @@
   (load "~/.emacs.d/lisp/home.el") ;; EXWM Configuration
 
   (use-package doom-themes
-    :init (load-theme 'doom-challenger-deep t) ;; tokyo-night is the main theme
+    :init (load-theme 'doom-tokyo-night t) ;; tokyo-night is the main theme; doom-challenger-deep
     :config
     (setq doom-themes-enable-bold t    
           doom-themes-enable-italic t))
@@ -473,12 +473,16 @@
   (use-package org
     :init (org-mode)
     :config
-    ;;(evil-define-key 'normal 'global (kbd "<tab>") 'org-cycle)
+    (evil-define-key 'normal 'global (kbd "<tab>") 'org-cycle)
 
     (setq org-src-preserve-indentation t)
     (setq org-startup-indented t)           
     (setq org-startup-with-inline-images t)
-    (setq org-src-fontify-natively t))
+    (setq org-src-fontify-natively t)
+
+            (set-face-attribute 'org-block-begin-line nil :background "#282c34")
+            (set-face-attribute 'org-block nil :background "#282c34")
+            (set-face-attribute 'org-block-end-line nil :background "#282c34"))
 
   (use-package org-roam :after org)
 

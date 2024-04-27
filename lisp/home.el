@@ -3,7 +3,7 @@
   (add-to-list 'load-path "~/.emacs.d/lib/elcord-rs/") ;; Rust library path
   (load-library "libelcord_rs") ;; Loads custom elcord library
   (require 'elcord-rs) ;; requires custom elcord library for usage
-  (elcord-rs-init-message) ;; states everything is ok upon startup 
+  (elcord-rs-main) ;; states everything is ok upon startup 
  ;; (elcord-rs-print-xorg-window) ;; prints current active window 
 
   ;; EXWM Plugins
